@@ -583,6 +583,11 @@ def divideSeries(requestContext, dividendSeriesList, divisorSeriesList):
 
     """
     if len(divisorSeriesList) != 1:
+        # Return no data when the series divisor is empty.
+        # Sometimes a query may be valid, but the data hasn't been persisted
+        # to disk yet and this then throws an error instead of returning no data.
+        if len(divisorSeriesList) == 0:
+            return []
         raise ValueError(
             "divideSeries second argument must reference exactly 1 series")
 
